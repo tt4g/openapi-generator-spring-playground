@@ -1,0 +1,88 @@
+plugins {
+    id "java"
+
+    id "org.openapi.generator" version "4.3.1"
+}
+
+ext {
+    versions = [
+        junit: "5.7.0",
+        mockito: "3.5.13",
+        assertj: "3.17.2",
+    ]
+}
+
+allprojects {
+    group = "com.github.tt4g.openapi.generator.spring.playground"
+    version = "0.1.0"
+
+    repositories {
+        mavenCentral()
+    }
+
+    tasks.withType(JavaCompile) {
+        options.release = 11
+        options.encoding = "UTF-8"
+        options.compilerArgs += "-Xlint:all"
+    }
+
+    configurations {
+        all*.exclude(group: "org.junit.vintage", module: "junit-vintage-engine")
+    }
+}
+
+dependencies {
+    implementation(platform("org.junit:junit-bom:${versions.junit}"))
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("org.junit.jupiter:junit-jupiter-params")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    testImplementation("org.mockito:mockito-core:${versions.mockito}")
+    testImplementation("org.mockito:mockito-junit-jupiter:${versions.mockito}")
+
+    testImplementation("org.assertj:assertj-core:${versions.assertj}")
+
+}
+
+openApiGenerate {
+    def openapiSpec = project.file("src/openapi/openapi.json")
+    def generatorConfig = project.file("src/openapi/generator-spring-config.json")
+
+    verbose = false
+    validateSpec = true
+    generatorName = "spring"
+    outputDir = "${project.buildDir}/openapi"
+    inputSpec = openapiSpec.toString()
+    // globalProperties = [:]
+    configFile = generatorConfig.toString()
+    skipOverwrite = false
+    packageName = "com.github.tt4g.openapi.generator.spring.playground"
+    // apiPackage = ""
+    // modelPackage = ""
+    // modelNamePrefix = ""
+    // modelNameSuffix = ""
+    // instantiationTypes = [:]
+    // typeMappings = [:]
+    // additionalProperties = [:]
+    // languageSpecificPrimitives = []
+    // importMappings = [:]
+    // invokerPackage = ""
+    // groupId = ""
+    // id = ""
+    // version = ""
+    // library = ""
+    generateModelTests = true
+    generateModelDocumentation = true
+    generateApiTests = true
+    generateApiDocumentation = true
+    withXml = false
+    // configOptions = [:]
+    enablePostProcessFile = false
+    skipValidateSpec = false
+    generateAliasAsModel = false
+}
+
+test {
+    useJUnitPlatform()
+}

@@ -1,5 +1,4 @@
 {
-  "additionalModelTypeAnnotations": null,
   "allowUnicodeIdentifiers": false,
   "apiFirst": false,
   "apiPackage": "com.github.tt4g.openapi.generator.spring.playground.openapi.api",
@@ -30,7 +29,6 @@
   "openApiNullable": true,
   "performBeanValidation": false,
   "prependFormOrBodyParameters": true,
-  "responseWrapper": null,
   "returnSuccessCode": true,
   "serializableModel": false,
   "singleContentTypes": false,
